@@ -37,7 +37,7 @@ jobs:
       - name: Preqrequisites
         run: |
           brew install cmake pkg-config
-          brew install ninja wget git-lfs
+          brew install  wget git git-lfs
           brew install protobuf
 
       # run build command
