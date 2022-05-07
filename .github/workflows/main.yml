@@ -1,0 +1,62 @@
+name: MacOSX Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version Tag'
+        required: false
+        default: 'v1.11.1'
+      label:
+        description: 'Additional label for release'
+        required: false
+        default: ''
+      prerelease:
+        description: 'Mark Release as Pre-Release'
+        required: false
+        default: 'false'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ 'macos-11' ]
+        python-version: [ '3.8', '3.9', '3.10' ]
+  
+    runs-on: ${{ matrix.os }}
+
+    name: ${{ github.event.inputs.tag }} python ${{ matrix.python-version }} on ${{ matrix.os }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      # install prerequisites
+      - name: Preqrequisites
+        run: |
+          brew install cmake pkg-config
+          brew install ninja wget git-lfs
+          brew install protobuf
+
+      # run build command
+      - name: Build onnxruntime-silicon
+        run: |
+          echo $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE
+          ./build-macos.sh
+          ls -la dist
+          
+      # upload dist
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/*
+          tag: "macosx-${{ github.event.inputs.tag }}${{ github.event.inputs.label }}"
+          release_name: "onnxruntime-silicon ${{ github.event.inputs.tag }}${{ github.event.inputs.label }}"
+          body: "Prebuilt onnxruntime-silicon wheel packages for MacOS version ${{ github.event.inputs.tag }}."
+          overwrite: true
+          file_glob: true
+          # prerelease: ${{ github.event.inputs.prerelease }}
