@@ -1,11 +1,11 @@
-# [ONNX Runtime](https://github.com/microsoft/onnxruntime) for Apple Silicon
+# [ONNX Runtime](https://github.com/microsoft/onnxruntime) for Apple Silicon [![PyPI](https://img.shields.io/pypi/v/onnxruntime-silicon)](https://pypi.org/project/onnxruntime-silicon/)
 ONNX Runtime prebuilt wheels for Apple Silicon (M1 / ARM64)
 
 ## Install
 To install the prebuilt packages, use the following command to install. The package is called **onnxruntime-silicon** but is a drop-in-replacement for the onnxruntime package.
 
 ```
-pip install onnxruntime-silicon -f https://github.com/cansik/onnxruntime-silicon/releases/tag/v1.11.1
+pip install onnxruntime-silicon
 ```
 
 ## Build
