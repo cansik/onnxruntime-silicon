@@ -6,7 +6,7 @@ on:
       tag:
         description: 'Version Tag'
         required: false
-        default: 'v1.11.1'
+        default: 'v1.13.1'
       label:
         description: 'Additional label for release'
         required: false
@@ -37,7 +37,7 @@ jobs:
       - name: Preqrequisites
         run: |
           brew install cmake pkg-config
-          brew install  wget git git-lfs
+          brew install wget git git-lfs
           brew install protobuf
 
       # run build command

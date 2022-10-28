@@ -2,7 +2,7 @@
 
 echo "building for $(python --version)"
 
-version_tag="v1.11.1"
+version_tag="v1.13.1"
 onnxruntime_dir="onnxruntime"
 
 # cleanup
@@ -20,7 +20,7 @@ pip install -r requirements-dev.txt
 
 # build
 ./build.sh --clean
-./build.sh --skip-keras-test --skip_tests --config "Release" --parallel 8 --enable_pybind --build_wheel --wheel_name_suffix=-silicon --osx_arch "arm64" --apple_deploy_target 11
+./build.sh --skip-keras-test --skip_tests --config "Release" --parallel 8 --enable_pybind --build_wheel --wheel_name_suffix=-silicon --osx_arch "arm64" --apple_deploy_target 11 --use_coreml
 
 # copy to dist
 mkdir -p "$dist_dir"
