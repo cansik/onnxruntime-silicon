@@ -1,5 +1,5 @@
 # [ONNX Runtime](https://github.com/microsoft/onnxruntime) for Apple Silicon [![PyPI](https://img.shields.io/pypi/v/onnxruntime-silicon)](https://pypi.org/project/onnxruntime-silicon/)
-ONNX Runtime prebuilt wheels for Apple Silicon (M1 / ARM64)
+ONNX Runtime prebuilt wheels for Apple Silicon (M1 / arm64)
 
 The official [ONNX Runtime](https://pypi.org/project/onnxruntime/1.13.1/#files) now contains `arm64` binaries for MacOS as well, but they do only support the CPU backend. This version adds the **CoreML** backend with version `v1.13.0`.
 
@@ -24,4 +24,4 @@ brew install wget cmake protobuf git git-lfs
 The pre-built wheel packages should be in the `dist` directory.
 
 ## About
-MIT License - Copyright (c) 2022 Florian Bruggisser
+MIT License - Copyright (c) 2023 Florian Bruggisser

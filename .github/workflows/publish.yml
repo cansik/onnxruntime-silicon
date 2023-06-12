@@ -6,7 +6,7 @@ on:
       tag:
         description: 'Version Tag'
         required: false
-        default: '2022.1.0'
+        default: 'v1.14.1'
 
 
 jobs:
