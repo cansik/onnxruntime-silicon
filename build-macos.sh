@@ -2,14 +2,14 @@
 
 echo "building for $(python --version)"
 
-version_tag="v1.15.0"
+version_tag="v1.14.2"
 onnxruntime_dir="onnxruntime"
 
 # cleanup
 rm -rf $onnxruntime_dir
 
 # download
-git clone --recurse-submodules --shallow-submodules --depth 1 --branch $version_tag https://github.com/microsoft/onnxruntime.git $onnxruntime_dir
+git clone https://github.com/verback2308/onnxruntime.git --recurse-submodules --shallow-submodules --depth 1 --branch rel-1.14.2 $onnxruntime_dir
 
 root_dir=$(pwd)
 dist_dir="$root_dir/dist"
