@@ -2,7 +2,7 @@
 
 echo "building for $(python --version)"
 
-version_tag="v1.15.0"
+version_tag="v1.15.1"
 onnxruntime_dir="onnxruntime"
 
 # cleanup
