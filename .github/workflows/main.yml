@@ -6,7 +6,7 @@ on:
       tag:
         description: 'Version Tag'
         required: false
-        default: 'v1.13.1'
+        default: 'v1.16.0'
       label:
         description: 'Additional label for release'
         required: false
@@ -20,7 +20,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ 'macos-11' ]
+        os: [ 'macos-13-large' ]
         python-version: [ '3.8', '3.9', '3.10' ]
   
     runs-on: ${{ matrix.os }}

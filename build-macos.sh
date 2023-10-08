@@ -2,7 +2,7 @@
 
 echo "building for $(python --version)"
 
-version_tag="v1.15.1"
+version_tag="v1.16.0"
 onnxruntime_dir="onnxruntime"
 
 # cleanup
@@ -29,7 +29,6 @@ pip install -r requirements-dev.txt
 
 # apply patches
 echo "applying patches..."
-patch -i "$patch_dir/flatbuffers.patch" "./build/MacOS/Release/_deps/flatbuffers-src/src/idl_gen_rust.cpp"
 
 # build
 ./build.sh --config Release \
@@ -50,7 +49,7 @@ if [ $RESULT -ne 0 ]; then
 fi
 
 # wait for file to be copied
-sleep 1
+sleep 5
 
 # copy to dist
 mkdir -p "$dist_dir"
