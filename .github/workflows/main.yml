@@ -6,7 +6,7 @@ on:
       tag:
         description: 'Version Tag'
         required: false
-        default: 'v1.16.0'
+        default: 'v1.16.3'
       label:
         description: 'Additional label for release'
         required: false
