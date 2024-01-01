@@ -1,36 +1,52 @@
-#!/bin/bash
+#!/bin/bash -e
 
 echo "building for $(python --version)"
 
 version_tag="v1.16.3"
 onnxruntime_dir="onnxruntime"
-
-# cleanup
-rm -rf $onnxruntime_dir
-
-# download
-git clone --recurse-submodules --shallow-submodules --depth 1 --branch $version_tag https://github.com/microsoft/onnxruntime.git $onnxruntime_dir
+url=https://github.com/microsoft/onnxruntime.git
 
 root_dir=$(pwd)
 dist_dir="$root_dir/dist"
 patch_dir="$root_dir/patches"
+
+# cleanup
+if [ -d "$root_dir/$onnxruntime_dir" ]; then
+    if [ "$1" != "--no-clean" ]; then
+        echo "found existing $onnxruntime_dir, resetting..."
+        pushd "$root_dir/$onnxruntime_dir" || exit
+        git fetch origin refs/tags/$version_tag:refs/tags/$version_tag
+        git reset --hard --recurse-submodules $version_tag
+        git clean -dfx
+        popd || exit
+    else
+        echo "not cleaning existing $onnxruntime_dir"
+    fi
+else
+    # download
+    git clone --recurse-submodules --shallow-submodules --depth 1 --branch $version_tag $url $onnxruntime_dir
+fi
 
 pushd "$root_dir/$onnxruntime_dir" || exit
 
 # install dependencies
 pip install -r requirements-dev.txt
 
-# cmake generate to download dependencies
-./build.sh --clean
-./build.sh --update \
-    --config Release \
-    --parallel \
-    --skip_tests
+if [ "$1" != "--no-clean" ]; then
+    # cmake generate to download dependencies
+    echo "cleaning..."
+    ./build.sh --clean \
+        --config Release || true
 
-# apply patches
-echo "applying patches..."
+    echo "updating..."
+    ./build.sh --update \
+        --config Release \
+        --parallel \
+        --skip_tests \
+        --cmake_generator="Ninja"
+fi
+echo "building..."
 
-# build
 ./build.sh --config Release \
     --parallel \
     --compile_no_warning_as_error \
@@ -39,7 +55,12 @@ echo "applying patches..."
     --use_coreml \
     --build_wheel \
     --wheel_name_suffix="-silicon" \
-    --skip_tests
+    --skip_tests \
+    --enable_lto \
+    --use_lock_free_queue \
+    --cmake_generator="Ninja"
+
+# TODO: trap
 
 # check for errors in build
 RESULT=$?
