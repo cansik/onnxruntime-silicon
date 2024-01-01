@@ -9,18 +9,74 @@ url=https://github.com/microsoft/onnxruntime.git
 root_dir=$(pwd)
 dist_dir="$root_dir/dist"
 patch_dir="$root_dir/patches"
+no_clean=0
+generator="Unix Makefiles"
+lto=0
+
+function print_help() {
+
+    cat <<EOF
+Clones the repo: $url [tag:$version_tag] or resets, if it
+already exists, and launches the build.
+
+usage: ./build-mac.sh [options]
+
+options:
+    -h,--help		show this help message and exit
+    -v,--version	shows onxruntime version
+    --no-clean		suppresses resetting / cleaning and updating the repo,
+                        therefore try avoiding full rebuild
+
+    --ninja		use ninja as build tool (sets corresponding CMake generator)
+    --lto		enable LTO (expect slower build times).
+
+caveats:
+    --no-clean depends on suppressed build stages' success and will fail if
+    that's not met.
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        print_help
+        exit
+        ;;
+    -v | --version)
+        echo $version_tag
+        exit
+        ;;
+    --no-clean)
+        no_clean=1
+        ;;
+    --ninja)
+        generator=Ninja
+        ;;
+    --ninja)
+        lto=1
+        ;;
+    *)
+        print_help
+        exit
+        ;;
+    esac
+    shift
+done
 
 # cleanup
 if [ -d "$root_dir/$onnxruntime_dir" ]; then
-    if [ "$1" != "--no-clean" ]; then
-        echo "found existing $onnxruntime_dir, resetting..."
+    echo "found existing $onnxruntime_dir"
+
+    if [ $no_clean = "0" ]; then
+        echo "resetting existing $onnxruntime_dir"
         pushd "$root_dir/$onnxruntime_dir" || exit
         git fetch origin refs/tags/$version_tag:refs/tags/$version_tag
         git reset --hard --recurse-submodules $version_tag
         git clean -dfx
         popd || exit
+
     else
-        echo "not cleaning existing $onnxruntime_dir"
+        echo "not resetting existing $onnxruntime_dir"
     fi
 else
     # download
@@ -32,7 +88,7 @@ pushd "$root_dir/$onnxruntime_dir" || exit
 # install dependencies
 pip install -r requirements-dev.txt
 
-if [ "$1" != "--no-clean" ]; then
+if [ $no_clean = "0" ]; then
     # cmake generate to download dependencies
     echo "cleaning..."
     ./build.sh --clean \
@@ -43,7 +99,7 @@ if [ "$1" != "--no-clean" ]; then
         --config Release \
         --parallel \
         --skip_tests \
-        --cmake_generator="Ninja"
+        --cmake_generator="$generator"
 fi
 echo "building..."
 
@@ -56,9 +112,9 @@ echo "building..."
     --build_wheel \
     --wheel_name_suffix="-silicon" \
     --skip_tests \
-    --enable_lto \
+    ${lto:+--enable_lto} \
     --use_lock_free_queue \
-    --cmake_generator="Ninja"
+    --cmake_generator="$generator"
 
 # TODO: trap
 
