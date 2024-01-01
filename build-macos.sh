@@ -25,7 +25,7 @@ options:
     -h,--help		show this help message and exit
     -v,--version	shows onxruntime version
     --no-clean		suppresses resetting / cleaning and updating the repo,
-                        therefore try avoiding full rebuild
+			therefore try avoiding full rebuild
 
     --ninja		use ninja as build tool (sets corresponding CMake generator)
     --lto		enable LTO (expect slower build times).
