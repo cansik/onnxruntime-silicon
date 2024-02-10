@@ -74,4 +74,4 @@ echo ""
 ```
 
 ## About
-MIT License - Copyright (c) 2023 Florian Bruggisser
+MIT License - Copyright (c) 2024 Florian Bruggisser
