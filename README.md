@@ -1,7 +1,11 @@
 # [ONNX Runtime](https://github.com/microsoft/onnxruntime) for Apple Silicon [![PyPI](https://img.shields.io/pypi/v/onnxruntime-silicon)](https://pypi.org/project/onnxruntime-silicon/)
 ONNX Runtime prebuilt wheels for Apple Silicon (M1 / M2 / arm64)
 
-The official [ONNX Runtime](https://pypi.org/project/onnxruntime/1.13.1/#files) now contains `arm64` binaries for MacOS as well, but they do only support the CPU backend. This version adds the **CoreML** backend with version `v1.13.0`.
+⚠️ The official [ONNX Runtime](https://pypi.org/project/onnxruntime/) now includes `arm64` binaries for MacOS as well with Core ML support. Please use the official wheel package as this repository is no longer needed.
+
+```
+pip install onnxruntime
+```
 
 ## Install
 To install the prebuilt packages, use the following command to install. The package is called **onnxruntime-silicon** but is a drop-in-replacement for the onnxruntime package.
